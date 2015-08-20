@@ -1,0 +1,24 @@
+#!/bin/bash
+
+#get the parameters passed in a list
+kill_list=$*
+
+
+for process in $kill_list
+do
+  re='^[0-9]+$'
+  if ! [[ $process =~ $re ]]
+  then
+  #if not a number
+    process_id=`ps -aux | grep -F $process | awk '{print $2}'`
+    process_name=`ps -aux | grep -F $process | awk '{print $11}'`
+    if [[ $process_name =~ $process ]]
+    then
+      kill $process_id
+    fi
+  else
+  #if is a number
+    echo $process
+  fi
+done
+
